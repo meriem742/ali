@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>إدراج التصميم</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4fdfd;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: #fff;
+      border: 2px solid #000;
+      border-radius: 10px;
+      padding: 20px;
+      width: 100%;
+      max-width: 500px;
+      position: relative;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .image-box {
+      position: relative;
+      border: 2px solid black;
+      border-radius: 10px;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background-color: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .image-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: none;
+    }
+
+    .icon-btn {
+      position: absolute;
+      top: 10px;
+      font-size: 18px;
+      background: white;
+      border-radius: 50%;
+      padding: 8px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+    }
+
+    #upload-icon {
+      left: 10px;
+    }
+
+    #reset-icon {
+      left: 50px;
+    }
+
+    #close-icon {
+      right: 10px;
+      color: red;
+    }
+
+    .details {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .details .info {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .confirm-icon {
+      font-size: 30px;
+      color: green;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 480px) {
+      .details {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .icon-btn {
+        font-size: 16px;
+        padding: 6px;
+      }
+
+      .confirm-icon {
+        align-self: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="image-box" id="imageBox">
+      <img id="previewImage" alt="معاينة التصميم">
+      <div id="upload-icon" class="fas fa-camera icon-btn" onclick="document.getElementById('fileInput').click()"></div>
+      <div id="reset-icon" class="fas fa-rotate-left icon-btn" onclick="resetImage()"></div>
+      <div id="close-icon" class="fas fa-times icon-btn" onclick="window.close()"></div>
+      <input type="file" id="fileInput" style="display: none;" accept="image/*" onchange="previewFile()">
+    </div>
+
+    <div class="details">
+      <div class="info">
+        <p>السعر: 2500 دج</p>
+        <p>الحجم: L</p>
+      </div>
+      <div class="fas fa-check-circle confirm-icon" onclick="confirmDesign()"></div>
+    </div>
+  </div>
+
+  <script>
+    function previewFile() {
+      const file = document.getElementById('fileInput').files[0];
+      const preview = document.getElementById('previewImage');
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          preview.src = reader.result;
+          preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function resetImage() {
+      const preview = document.getElementById('previewImage');
+      preview.src = "";
+      preview.style.display = "none";
+      document.getElementById('fileInput').value = "";
+    }
+
+    function confirmDesign() {
+      const preview = document.getElementById('previewImage');
+      if (preview.src) {
+        sessionStorage.setItem("designAdded", "true");
+        sessionStorage.setItem("designImage", preview.src);
+        window.location.href = "form.html";
+      } else {
+        alert("يرجى إدراج تصميم أولا!");
+      }
+    }
+  </script>
+
+</body>
+</html>
