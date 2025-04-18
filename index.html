@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>نموذج الطلب</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4fdfd;
+      padding: 20px;
+      direction: rtl;
+    }
+    .form-container {
+      max-width: 400px;
+      background: white;
+      padding: 20px;
+      border: 2px solid black;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .form-container h2 {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .form-container p {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      box-sizing: border-box;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    .btn {
+      background-color: black;
+      color: white;
+      padding: 10px;
+      margin-top: 20px;
+      width: 100%;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    .summary {
+      margin-top: 20px;
+      padding: 15px;
+      border: 2px solid black;
+      background: #fff;
+      border-radius: 10px;
+    }
+    .summary h3 {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .product-image {
+      width: 100%;
+      max-width: 200px;
+      margin: 10px auto;
+      display: block;
+    }
+    .success-message {
+      color: green;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .error-message {
+      color: red;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .design-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .design-info i {
+      cursor: pointer;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>أطلب الآن</h2>
+    <p>تحقق من معلوماتك جيداً</p>
+    <div id="errorMessage" class="error-message"></div>
+    <label>الإسم كامل</label>
+    <input type="text" id="name">
+    <label>رقم الهاتف</label>
+    <input type="text" id="phone">
+    <label>الولاية</label>
+    <select id="state">
+      <option value="">اختر الولاية</option>
+      <option>أدرار</option>
+      <option>الشلف</option>
+      <option>الأغواط</option>
+      <option>أم البواقي</option>
+      <option>باتنة</option>
+      <option>بجاية</option>
+      <option>بسكرة</option>
+      <option>بشار</option>
+      <option>البليدة</option>
+      <option>البويرة</option>
+      <option>تمنراست</option>
+      <option>تبسة</option>
+      <option>تلمسان</option>
+      <option>تيارت</option>
+      <option>تيزي وزو</option>
+      <option>الجزائر</option>
+      <option>الجلفة</option>
+      <option>جيجل</option>
+      <option>سطيف</option>
+      <option>سعيدة</option>
+      <option>سكيكدة</option>
+      <option>سيدي بلعباس</option>
+      <option>عنابة</option>
+      <option>قالمة</option>
+      <option>قسنطينة</option>
+      <option>المدية</option>
+      <option>مستغانم</option>
+      <option>المسيلة</option>
+      <option>معسكر</option>
+      <option>ورقلة</option>
+      <option>وهران</option>
+      <option>البيض</option>
+      <option>إليزي</option>
+      <option>برج بوعريريج</option>
+      <option>بومرداس</option>
+      <option>الطارف</option>
+      <option>تندوف</option>
+      <option>تيسمسيلت</option>
+      <option>الوادي</option>
+      <option>خنشلة</option>
+      <option>سوق أهراس</option>
+      <option>تيبازة</option>
+      <option>ميلة</option>
+      <option>عين الدفلى</option>
+      <option>النعامة</option>
+      <option>عين تموشنت</option>
+      <option>غرداية</option>
+      <option>غليزان</option>
+      <option>تيميمون</option>
+      <option>برج باجي مختار</option>
+      <option>أولاد جلال</option>
+      <option>بني عباس</option>
+      <option>عين صالح</option>
+      <option>عين قزام</option>
+      <option>تقرت</option>
+      <option>جانت</option>
+      <option>المغير</option>
+      <option>المنيعة</option>
+    </select>
+
+    <label>طريقة التوصيل</label>
+    <select id="deliveryMethod" onchange="calculateTotal()">
+      <option value="">اختر طريقة التوصيل</option>
+      <option value="400">عادي - 400 دج</option>
+      <option value="800">سريع - 800 دج</option>
+    </select>
+
+    <label>مكان التوصيل</label>
+    <input type="text" id="location">
+
+    <label>إدراج تصميم</label>
+    <div id="designArea">
+      <button class="btn" onclick="openDesignPage()">إدراج تصميم</button>
+    </div>
+
+    <label>السعر الكامل</label>
+    <input type="text" id="totalPrice" readonly>
+
+    <button class="btn" onclick="showSummary()">تأكيد الطلب</button>
+
+    <div class="summary" id="summary" style="display: none;">
+      <h3>ملخص الطلب:</h3>
+      <p id="sumName"></p>
+      <p id="sumPhone"></p>
+      <p id="sumState"></p>
+      <p id="sumDelivery"></p>
+      <p id="sumLocation"></p>
+      <p id="sumDesign"></p>
+      <p id="sumPrice"></p>
+      <div>
+        <img src="product-image.jpg" alt="صورة المنتج" class="product-image" id="productImage">
+        <p>السعر: 2500 دج</p>
+        <p>الحجم: L</p>
+      </div>
+      <div id="designPreviewContainer" style="text-align:center;"></div>
+      <button class="btn" onclick="confirmOrder()">تأكيد الطلب</button>
+    </div>
+  </div>
+
+  <script>
+    const basePrice = 2500;
+
+    function saveFormData() {
+      sessionStorage.setItem("formName", document.getElementById("name").value);
+      sessionStorage.setItem("formPhone", document.getElementById("phone").value);
+      sessionStorage.setItem("formState", document.getElementById("state").value);
+      sessionStorage.setItem("formDelivery", document.getElementById("deliveryMethod").value);
+      sessionStorage.setItem("formLocation", document.getElementById("location").value);
+    }
+    function loadFormData() {
+      if (sessionStorage.getItem("formName")) {
+        document.getElementById("name").value = sessionStorage.getItem("formName");
+        document.getElementById("phone").value = sessionStorage.getItem("formPhone");
+        document.getElementById("state").value = sessionStorage.getItem("formState");
+        document.getElementById("deliveryMethod").value = sessionStorage.getItem("formDelivery");
+        document.getElementById("location").value = sessionStorage.getItem("formLocation");
+        calculateTotal();
+      }
+    }
+
+    function calculateTotal() {
+      const delivery = parseInt(document.getElementById("deliveryMethod").value || "0");
+      const hasDesign = sessionStorage.getItem("designAdded") === "true";
+      const designPrice = hasDesign ? 500 : 0;
+      const total = basePrice + delivery + designPrice;
+      document.getElementById("totalPrice").value = total + " دج";
+    }
+
+    function openDesignPage() {
+      saveFormData();
+      const win = window.open("order.html", "DesignPopup", "width=800,height=600");
+      const checkDesignInterval = setInterval(() => {
+        if (sessionStorage.getItem("designAdded") === "true") {
+          clearInterval(checkDesignInterval);
+          const uploadedDesign = sessionStorage.getItem("uploadedDesign");
+          let content = '<div class="design-info"><span class="success-message">تم إدراج التصميم</span>';
+          if (uploadedDesign) {
+            content += '<img src="' + uploadedDesign + '" alt="تصميم" style="max-width: 100px; max-height: 50px; border-radius: 5px; margin: 0 10px;">';
+          }
+          content += '<i class="fas fa-trash" onclick="removeDesign()"></i></div>';
+          document.getElementById("designArea").innerHTML = content;
+          calculateTotal();
+          loadFormData();
+        }
+      }, 500);
+    }
+    function removeDesign() {
+      sessionStorage.removeItem("designAdded");
+      sessionStorage.removeItem("uploadedDesign");
+      document.getElementById("designArea").innerHTML =
+        '<button class="btn" onclick="openDesignPage()">إدراج تصميم</button>';
+      calculateTotal();
+    }
+
+    function showSummary() {
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const state = document.getElementById("state").value;
+      const delivery = document.getElementById("deliveryMethod").value;
+      const location = document.getElementById("location").value.trim();
+      const errorMsg = document.getElementById("errorMessage");
+
+      if (!name || !phone || !state || !delivery || !location) {
+        errorMsg.textContent = "يرجى ملء جميع الخانات!";
+        return;
+      } else {
+        errorMsg.textContent = "";
+      }
+
+      calculateTotal();
+      document.getElementById("summary").style.display = "block";
+      document.getElementById("sumName").innerText = "الإسم كامل: " + name;
+      document.getElementById("sumPhone").innerText = "رقم الهاتف: " + phone;
+      document.getElementById("sumState").innerText = "الولاية: " + state;
+      document.getElementById("sumDelivery").innerText = "طريقة التوصيل: " + document.getElementById("deliveryMethod").selectedOptions[0].text;
+      document.getElementById("sumLocation").innerText = "مكان التوصيل: " + location;
+      document.getElementById("sumDesign").innerText = "إدراج تصميم: " + (sessionStorage.getItem("designAdded") === "true" ? "تم الإدراج" : "لا يوجد تصميم");
+      document.getElementById("sumPrice").innerText = "السعر الكامل: " + document.getElementById("totalPrice").value;
+
+      const uploadedDesign = sessionStorage.getItem("uploadedDesign");
+      const designContainer = document.getElementById("designPreviewContainer");
+      if (uploadedDesign) {
+        document.getElementById("productImage").src = uploadedDesign;
+        designContainer.innerHTML = '<p>تصميمك:</p><img src="' + uploadedDesign + '" style="max-width: 120px; border: 1px solid #ccc; border-radius: 10px;">';
+      } else {
+        designContainer.innerHTML = "";
+      }
+    }
+    function confirmOrder() {
+      alert("تم تأكيد الطلب بنجاح!");
+      sessionStorage.clear();
+      location.reload();
+    }
+
+    window.onload = function () {
+      loadFormData();
+      if (sessionStorage.getItem("designAdded") === "true") {
+        const uploadedDesign = sessionStorage.getItem("uploadedDesign");
+        let content = '<div class="design-info"><span class="success-message">تم إدراج التصميم</span>';
+        if (uploadedDesign) {
+          content += '<img src="' + uploadedDesign + '" alt="تصميم" style="max-width: 100px; max-height: 50px; border-radius: 5px; margin: 0 10px;">';
+        }
+        content += '<i class="fas fa-trash" onclick="removeDesign()"></i></div>';
+        document.getElementById("designArea").innerHTML = content;
+        calculateTotal();
+      }
+    };
+  </script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>
